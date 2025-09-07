@@ -5,6 +5,9 @@ export const scenarioBriefs: ScenarioBrief[] = [
     id: "auth_reset_expired",
     title: "Reset link expires",
     facts: {
+      customerName: "Sarah Chen",
+      customerRole: "Marketing Manager",
+      customerCompany: "TechFlow Solutions",
       environment: "Chrome 120.0.6099.109, Windows 11 Pro",
       errorString: "This password reset link has expired or is invalid",
       dateIssued: "2024-01-15 14:30 UTC",
@@ -24,6 +27,9 @@ export const scenarioBriefs: ScenarioBrief[] = [
     id: "auth_2fa_delay",
     title: "2FA SMS delay",
     facts: {
+      customerName: "Marcus Rodriguez",
+      customerRole: "Operations Director",
+      customerCompany: "RetailMax Inc",
       environment: "iPhone 15 Pro, iOS 17.5.1, Safari",
       carrier: "Verizon",
       delay: "15-20 minutes average delay",
@@ -43,6 +49,9 @@ export const scenarioBriefs: ScenarioBrief[] = [
     id: "billing_double_charge",
     title: "Double charge",
     facts: {
+      customerName: "Alex Thompson",
+      customerRole: "Product Designer",
+      customerCompany: "Creative Studios LLC",
       environment: "Safari 17.1, macOS Sonoma 14.1",
       amount: "$49.99 charged twice",
       paymentMethod: "Visa ending in 4532",
@@ -62,6 +71,9 @@ export const scenarioBriefs: ScenarioBrief[] = [
     id: "mobile_faceid_crash",
     title: "iOS Face ID crash",
     facts: {
+      customerName: "Jordan Kim",
+      customerRole: "Software Engineer",
+      customerCompany: "DataSync Technologies",
       environment: "iPhone 14, iOS 17.5, BugTrail app v2.1.3",
       trigger: "Face ID authentication prompt",
       errorCode: "EXC_BAD_ACCESS (SIGSEGV)",

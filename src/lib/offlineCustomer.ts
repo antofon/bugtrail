@@ -53,13 +53,14 @@ export function generateOfflineReply(history: ChatMessage[], scenarioId: string)
 }
 
 function getSymptomResponse(scenario: ScenarioBrief): string {
+  const customerName = scenario.facts.customerName || "Customer";
   const responses = {
-    auth_reset_expired: "Hi, I'm trying to reset my password but the link isn't working. It says the link has expired or is invalid.",
-    auth_2fa_delay: "Hello, I'm not receiving my 2FA SMS codes. Been waiting like 20 minutes now and still nothing.",
-    billing_double_charge: "Hi there, I think I was charged twice for my premium upgrade. My card shows two $49.99 charges.",
-    mobile_faceid_crash: "Hey, your iOS app keeps crashing when I try to use Face ID login. It worked fine before the update."
+    auth_reset_expired: `Hi, I'm ${customerName} from ${scenario.facts.customerCompany}. I'm trying to reset my password but the link isn't working. It says the link has expired or is invalid.`,
+    auth_2fa_delay: `Hello, this is ${customerName} from ${scenario.facts.customerCompany}. I'm not receiving my 2FA SMS codes. Been waiting like 20 minutes now and still nothing.`,
+    billing_double_charge: `Hi there, I'm ${customerName} from ${scenario.facts.customerCompany}. I think I was charged twice for my premium upgrade. My card shows two $49.99 charges.`,
+    mobile_faceid_crash: `Hey, this is ${customerName} from ${scenario.facts.customerCompany}. Your iOS app keeps crashing when I try to use Face ID login. It worked fine before the update.`
   };
-  return responses[scenario.id as keyof typeof responses] || "I'm having some issues with your service.";
+  return responses[scenario.id as keyof typeof responses] || `Hi, I'm ${customerName}. I'm having some issues with your service.`;
 }
 
 function getEnvironmentResponse(scenario: ScenarioBrief): string {

@@ -44,8 +44,10 @@ export async function POST(request: NextRequest) {
       const completion = await openai.chat.completions.create({
         model: process.env.OPENAI_MODEL || "gpt-4o-mini",
         max_tokens: 400,
-        temperature: 0.7,
-        stop: ["\n\nAgent:"],
+        temperature: 0.3,
+        top_p: 0.9,
+        frequency_penalty: 0.1,
+        stop: ["\n\nAgent:", "Agent:", "\n\n"],
         messages: [
           {
             role: "system",
@@ -57,7 +59,12 @@ export async function POST(request: NextRequest) {
           },
           {
             role: "user",
-            content: `Agent just said: """${lastAgentMessage.text}""". Reply as the customer with ≤ 70 words and reveal one new fact.`
+            content: `Previous conversation context:
+${history.slice(-4).map(m => `${m.role.toUpperCase()}: ${m.text}`).join('\n')}
+
+Agent just said: """${lastAgentMessage.text}"""
+
+Reply as the customer with ≤ 70 words and reveal one new fact. Remember to maintain strict consistency with any facts you've already established about yourself (name, details, etc.). If the agent gets something wrong about you, politely correct them.`
           }
         ]
       });
