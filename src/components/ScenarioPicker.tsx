@@ -8,25 +8,25 @@ interface ScenarioPickerProps {
 
 export default function ScenarioPicker({ selectedScenario, onScenarioChange }: ScenarioPickerProps) {
   return (
-    <div className="space-y-3">
-      <h3 className="text-sm font-medium text-gray-700">Scenario</h3>
-      <div className="flex flex-wrap gap-2">
+    <div className="space-y-4">
+      <h3 className="text-lg font-semibold text-gray-900">Choose Scenario</h3>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {scenarioBriefs.map((scenario) => (
           <button
             key={scenario.id}
             onClick={() => onScenarioChange(scenario.id)}
-            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+            className={`p-4 rounded-xl text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 ${
               selectedScenario === scenario.id
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                ? "bg-gradient-to-r from-orange-400 to-pink-500 text-white shadow-lg transform scale-105"
+                : "bg-white/80 text-gray-700 hover:bg-white hover:shadow-md border border-gray-200"
             }`}
           >
             {scenario.title}
           </button>
         ))}
       </div>
-      <p className="text-xs text-gray-500">
-        The customer will reveal one new fact per turn.
+      <p className="text-sm text-gray-600 bg-blue-50 p-3 rounded-lg border-l-4 border-blue-400">
+        💡 The customer will reveal one new fact per turn following realistic support patterns.
       </p>
     </div>
   );
