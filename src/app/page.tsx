@@ -1,101 +1,162 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useEffect } from "react";
+import { ChatMessage, Persona, ScenarioId, BugTrail } from "@/lib/types";
+import { defaultPersona } from "@/lib/persona";
+import { saveChat, loadChat, savePersona, loadPersona, saveScenario, loadScenario, saveBugTrail, loadBugTrail } from "@/lib/storage";
+import ScenarioPicker from "@/components/ScenarioPicker";
+import PersonaControls from "@/components/PersonaControls";
+import ChatWindow from "@/components/ChatWindow";
+import ExtractPanel from "@/components/ExtractPanel";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [selectedScenario, setSelectedScenario] = useState<ScenarioId | null>(null);
+  const [persona, setPersona] = useState<Persona>(defaultPersona);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [bugtrail, setBugtrail] = useState<BugTrail | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  // Load saved state on mount
+  useEffect(() => {
+    setSelectedScenario(loadScenario());
+    setPersona(loadPersona());
+    setMessages(loadChat());
+    setBugtrail(loadBugTrail());
+  }, []);
+
+  // Save state when it changes
+  useEffect(() => {
+    if (selectedScenario) {
+      saveScenario(selectedScenario);
+    }
+  }, [selectedScenario]);
+
+  useEffect(() => {
+    savePersona(persona);
+  }, [persona]);
+
+  useEffect(() => {
+    saveChat(messages);
+  }, [messages]);
+
+  useEffect(() => {
+    if (bugtrail) {
+      saveBugTrail(bugtrail);
+    }
+  }, [bugtrail]);
+
+  const handleScenarioChange = (scenarioId: ScenarioId) => {
+    setSelectedScenario(scenarioId);
+    // Clear chat when scenario changes
+    setMessages([]);
+    setBugtrail(null);
+  };
+
+  const handleExtract = (extractedBugtrail: BugTrail) => {
+    setBugtrail(extractedBugtrail);
+  };
+
+  const generateMarkdown = (bugtrail: BugTrail): string => {
+    return `# ${bugtrail.title}
+
+## Summary
+${bugtrail.summary}
+
+## Environment Markers
+${bugtrail.environment.map(env => `- ${env}`).join('\n')}
+
+## Preconditions
+${bugtrail.preconditions.map(pre => `- ${pre}`).join('\n')}
+
+## Steps to Reproduce
+${bugtrail.steps.map((step, i) => `${i + 1}. ${step}`).join('\n')}
+
+## Expected vs Actual
+**Expected:** ${bugtrail.expected}
+
+**Actual:** ${bugtrail.actual}
+
+## Impact
+${bugtrail.impact}
+
+## Evidence
+${bugtrail.evidence.map(ev => `- ${ev}`).join('\n')}
+
+## Tags
+${bugtrail.tags.map(tag => `\`${tag}\``).join(', ')}`;
+  };
+
+  const generateJiraFormat = (bugtrail: BugTrail): string => {
+    return `h1. ${bugtrail.title}
+
+h2. Summary
+${bugtrail.summary}
+
+h2. Environment
+${bugtrail.environment.map(env => `* ${env}`).join('\n')}
+
+h2. Preconditions
+${bugtrail.preconditions.map(pre => `* ${pre}`).join('\n')}
+
+h2. Steps to Reproduce
+${bugtrail.steps.map((step) => `# ${step}`).join('\n')}
+
+h2. Expected vs Actual
+*Expected:* ${bugtrail.expected}
+
+*Actual:* ${bugtrail.actual}
+
+h2. Impact
+${bugtrail.impact}
+
+h2. Evidence
+${bugtrail.evidence.map(ev => `* ${ev}`).join('\n')}
+
+h2. Labels
+${bugtrail.tags.join(', ')}`;
+  };
+
+  const handleCopyMarkdown = () => {
+    if (bugtrail) {
+      navigator.clipboard.writeText(generateMarkdown(bugtrail));
+    }
+  };
+
+  const handleCopyJira = () => {
+    if (bugtrail) {
+      navigator.clipboard.writeText(generateJiraFormat(bugtrail));
+    }
+  };
+
+  return (
+    <div className="space-y-8">
+      {/* Scenario & Persona Section */}
+      <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="space-y-6">
+          <ScenarioPicker
+            selectedScenario={selectedScenario}
+            onScenarioChange={handleScenarioChange}
+          />
+          <PersonaControls
+            persona={persona}
+            onPersonaChange={setPersona}
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+
+      {/* Main Content - Chat and Report */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <ChatWindow
+          scenarioId={selectedScenario}
+          messages={messages}
+          onMessagesChange={setMessages}
+          onExtract={handleExtract}
+        />
+        <ExtractPanel
+          bugtrail={bugtrail}
+          onCopyMarkdown={handleCopyMarkdown}
+          onCopyJira={handleCopyJira}
+        />
+      </div>
     </div>
   );
 }
