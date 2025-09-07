@@ -43,6 +43,14 @@ export default function Button({
     ...buttonProps 
   } = props;
 
+  // Suppress unused variable warnings for excluded props
+  void onAnimationStart;
+  void onAnimationEnd; 
+  void onAnimationIteration;
+  void onDrag;
+  void onDragStart;
+  void onDragEnd;
+
   return (
     <motion.button 
       className={classes}

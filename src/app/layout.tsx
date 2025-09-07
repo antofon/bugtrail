@@ -1,6 +1,5 @@
 "use client";
 
-import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { motion } from "framer-motion";
 import { Github, Sparkles } from "lucide-react";
