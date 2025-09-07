@@ -70,7 +70,7 @@ export default function PersonaControls({ persona, onPersonaChange }: PersonaCon
             onChange={(e) => updatePersona("toneArc", e.target.value)}
             className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
           >
-            <option value="calm_to_frustrated">Calm → Frustrated</option>
+            <option value="calm_to_frustrated">Calm &rarr; Frustrated</option>
             <option value="steady_calm">Steady Calm</option>
           </select>
         </div>

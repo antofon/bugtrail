@@ -202,11 +202,11 @@ ${bugtrail.tags.join(', ')}`;
               <div>
                 <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-4">Features</h3>
                 <ul className="space-y-2 text-gray-600 text-sm md:text-base">
-                  <li>• Realistic customer personas with consistent identities</li>
-                  <li>• Gradual fact revelation following support best practices</li>
-                  <li>• Professional bug report generation</li>
-                  <li>• Offline mode for demos without API access</li>
-                  <li>• Export to Markdown or Jira formats</li>
+                  <li>&bull; Realistic customer personas with consistent identities</li>
+                  <li>&bull; Gradual fact revelation following support best practices</li>
+                  <li>&bull; Professional bug report generation</li>
+                  <li>&bull; Offline mode for demos without API access</li>
+                  <li>&bull; Export to Markdown or Jira formats</li>
                 </ul>
               </div>
             </div>
