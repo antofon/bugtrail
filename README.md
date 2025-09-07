@@ -9,7 +9,7 @@ BugTrail lets you roleplay a real support conversation (you = agent, AI = custom
 - **Structured BugTrail Generation**: Convert conversations into professional bug reports
 - **Offline Fallback**: Works even without OpenAI API access using built-in customer simulator
 - **Local-First**: All data persists in localStorage, no external database required
-- **Responsive Design**: Works on desktop and mobile devices
+- **Fully Responsive**: Beautiful UI that adapts seamlessly across all devices: desktop, tablet, and mobile
 
 ## Scenarios
 
