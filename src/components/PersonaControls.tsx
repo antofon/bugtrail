@@ -1,9 +1,61 @@
+"use client";
+
 import { Persona } from "@/lib/types";
+import { motion } from "framer-motion";
+import { Users, ChevronDown } from "lucide-react";
 
 interface PersonaControlsProps {
   persona: Persona;
   onPersonaChange: (persona: Persona) => void;
 }
+
+const personaFields = [
+  {
+    key: "industry" as keyof Persona,
+    label: "Industry",
+    options: [
+      { value: "SaaS", label: "SaaS" },
+      { value: "Ecommerce", label: "Ecommerce" },
+      { value: "Fintech", label: "Fintech" },
+      { value: "Gaming", label: "Gaming" }
+    ]
+  },
+  {
+    key: "techSavvy" as keyof Persona,
+    label: "Tech Savvy",
+    options: [
+      { value: "low", label: "Low" },
+      { value: "medium", label: "Medium" },
+      { value: "high", label: "High" }
+    ]
+  },
+  {
+    key: "patience" as keyof Persona,
+    label: "Patience",
+    options: [
+      { value: "low", label: "Low" },
+      { value: "medium", label: "Medium" },
+      { value: "high", label: "High" }
+    ]
+  },
+  {
+    key: "toneArc" as keyof Persona,
+    label: "Tone Arc",
+    options: [
+      { value: "calm_to_frustrated", label: "Calm → Frustrated" },
+      { value: "steady_calm", label: "Steady Calm" }
+    ]
+  },
+  {
+    key: "timezone" as keyof Persona,
+    label: "Timezone",
+    options: [
+      { value: "America/Los_Angeles", label: "PT" },
+      { value: "America/New_York", label: "ET" },
+      { value: "Europe/London", label: "GMT" }
+    ]
+  }
+];
 
 export default function PersonaControls({ persona, onPersonaChange }: PersonaControlsProps) {
   const updatePersona = (field: keyof Persona, value: string) => {
@@ -11,85 +63,75 @@ export default function PersonaControls({ persona, onPersonaChange }: PersonaCon
   };
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-gray-900">Customer Persona</h3>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Industry
-          </label>
-          <select
-            value={persona.industry}
-            onChange={(e) => updatePersona("industry", e.target.value)}
-            className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-          >
-            <option value="SaaS">SaaS</option>
-            <option value="Ecommerce">Ecommerce</option>
-            <option value="Fintech">Fintech</option>
-            <option value="Gaming">Gaming</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Tech Savvy
-          </label>
-          <select
-            value={persona.techSavvy}
-            onChange={(e) => updatePersona("techSavvy", e.target.value)}
-            className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-          >
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Patience
-          </label>
-          <select
-            value={persona.patience}
-            onChange={(e) => updatePersona("patience", e.target.value)}
-            className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-          >
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Tone Arc
-          </label>
-          <select
-            value={persona.toneArc}
-            onChange={(e) => updatePersona("toneArc", e.target.value)}
-            className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-          >
-            <option value="calm_to_frustrated">Calm &rarr; Frustrated</option>
-            <option value="steady_calm">Steady Calm</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Timezone
-          </label>
-          <select
-            value={persona.timezone}
-            onChange={(e) => updatePersona("timezone", e.target.value)}
-            className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-          >
-            <option value="America/Los_Angeles">PT</option>
-            <option value="America/New_York">ET</option>
-            <option value="Europe/London">GMT</option>
-          </select>
-        </div>
+    <motion.div 
+      className="space-y-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+    >
+      <div className="flex items-center space-x-3">
+        <Users className="w-5 h-5 text-purple-400" />
+        <h3 className="text-xl font-bold text-white">Customer Persona</h3>
       </div>
-    </div>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        {personaFields.map((field, index) => (
+          <motion.div
+            key={field.key}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+            className="space-y-2"
+          >
+            <label className="block text-sm font-semibold text-gray-300 mb-3">
+              {field.label}
+            </label>
+            <div className="relative">
+              <select
+                value={persona[field.key]}
+                onChange={(e) => updatePersona(field.key, e.target.value)}
+                className="w-full text-sm glass-subtle border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400/50 transition-all duration-300 appearance-none cursor-pointer hover:glass-strong"
+              >
+                {field.options.map((option) => (
+                  <option key={option.value} value={option.value} className="bg-gray-800 text-white">
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+      
+      {/* Persona Preview */}
+      <motion.div
+        className="glass-subtle p-4 rounded-2xl border border-purple-400/20 relative overflow-hidden"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, delay: 0.9 }}
+      >
+        <div className="text-sm text-purple-100">
+          <span className="font-semibold text-purple-300">Current Persona:</span>{" "}
+          A {persona.patience} patience, {persona.techSavvy} tech-savvy customer from the {persona.industry} industry
+          {persona.toneArc === "calm_to_frustrated" ? ", starting calm but may get frustrated" : ", maintaining steady composure"}
+          {" "}in {persona.timezone.split("/")[1]?.replace("_", " ") || persona.timezone} timezone.
+        </div>
+        
+        {/* Subtle animated background */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-purple-500/5 -z-10"
+          animate={{ 
+            backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] 
+          }}
+          transition={{ 
+            duration: 10, 
+            repeat: Infinity, 
+            ease: "linear" 
+          }}
+          style={{ backgroundSize: "200% 200%" }}
+        />
+      </motion.div>
+    </motion.div>
   );
 }
