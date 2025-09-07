@@ -14,7 +14,7 @@ export default function PersonaControls({ persona, onPersonaChange }: PersonaCon
     <div className="space-y-4">
       <h3 className="text-lg font-semibold text-gray-900">Customer Persona</h3>
       
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Industry

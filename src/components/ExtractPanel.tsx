@@ -10,7 +10,7 @@ interface ExtractPanelProps {
 export default function ExtractPanel({ bugtrail, onCopyMarkdown, onCopyJira }: ExtractPanelProps) {
   if (!bugtrail) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
+      <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">BugTrail Report</h2>
         <p className="text-gray-500 text-sm">
           Generate a BugTrail to see the structured report here.
@@ -20,14 +20,14 @@ export default function ExtractPanel({ bugtrail, onCopyMarkdown, onCopyJira }: E
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <div className="flex items-center justify-between mb-6">
+    <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
         <h2 className="text-lg font-semibold text-gray-900">BugTrail Report</h2>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={onCopyMarkdown}>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Button variant="outline" size="sm" onClick={onCopyMarkdown} className="text-xs sm:text-sm">
             Copy Markdown
           </Button>
-          <Button variant="outline" size="sm" onClick={onCopyJira}>
+          <Button variant="outline" size="sm" onClick={onCopyJira} className="text-xs sm:text-sm">
             Copy for Jira
           </Button>
         </div>

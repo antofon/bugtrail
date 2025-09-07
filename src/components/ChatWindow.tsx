@@ -137,8 +137,8 @@ export default function ChatWindow({
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 flex flex-col h-[600px]">
-      <div className="p-4 border-b border-gray-200">
+    <div className="bg-white rounded-lg border border-gray-200 flex flex-col h-[500px] sm:h-[600px]">
+      <div className="p-3 sm:p-4 border-b border-gray-200">
         <h2 className="text-lg font-semibold text-gray-900">Live Roleplay</h2>
         {isOfflineMode && (
           <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-sm text-yellow-800">
@@ -147,10 +147,10 @@ export default function ChatWindow({
         )}
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-3 sm:p-4">
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
-            <p className="text-gray-500 text-sm">
+            <p className="text-gray-500 text-sm text-center px-4">
               Start by asking the customer what is going on.
             </p>
           </div>
@@ -175,8 +175,8 @@ export default function ChatWindow({
         )}
       </div>
 
-      <div className="p-4 border-t border-gray-200">
-        <div className="flex gap-2">
+      <div className="p-3 sm:p-4 border-t border-gray-200">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           <div className="flex-1">
             <Textarea
               ref={textareaRef}
@@ -188,11 +188,12 @@ export default function ChatWindow({
               disabled={!scenarioId || isLoading}
             />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-row sm:flex-col gap-2 justify-stretch">
             <Button
               onClick={handleSend}
               disabled={!input.trim() || !scenarioId || isLoading}
               size="sm"
+              className="flex-1 sm:flex-none"
             >
               Send
             </Button>
@@ -201,6 +202,7 @@ export default function ChatWindow({
               disabled={messages.length === 0 || isExtracting}
               variant="secondary"
               size="sm"
+              className="flex-1 sm:flex-none"
             >
               {isExtracting ? "Generating..." : "Generate BugTrail"}
             </Button>
